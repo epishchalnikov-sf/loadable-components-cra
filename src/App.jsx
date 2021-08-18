@@ -1,11 +1,14 @@
-import logo from './logo.svg';
 import './App.css';
+import loadable from '@loadable/component';
+import React from 'react';
+
+const LoadableComponent = loadable(() => import('./Component'));
 
 function App() {
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
@@ -17,6 +20,7 @@ function App() {
         >
           Learn React
         </a>
+        <LoadableComponent />
       </header>
     </div>
   );
