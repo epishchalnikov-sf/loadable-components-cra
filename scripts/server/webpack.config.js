@@ -38,6 +38,7 @@ module.exports = {
                             require.resolve('babel-preset-react-app'),
                         ],
                     ],
+                    plugins: ['@loadable/babel-plugin'],
                     // This is a feature of `babel-loader` for webpack (not Babel itself).
                     // It enables caching results in ./node_modules/.cache/babel-loader/
                     // directory for faster rebuilds.

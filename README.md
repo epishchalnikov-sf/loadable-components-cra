@@ -1,4 +1,5 @@
 NODE_ENV=development npm run build:ssr
+NODE_ENV=development npm run start:ssr
 
 # Getting Started with Create React App
 

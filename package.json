@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@loadable/component": "^5.15.0",
+    "@loadable/server": "^5.15.1",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
@@ -14,11 +15,11 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start:csr": "react-scripts start",
-    "build:csr": "react-scripts build",
-    "build:ssr": "react-scripts build && node scripts/server/build",
+    "start:csr": "craco start",
+    "build:csr": "craco build",
+    "build:ssr": "craco build && node scripts/server/build",
     "start:ssr": "node build/server/server.js",
-    "test": "react-scripts test",
+    "test": "craco test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -40,6 +41,9 @@
     ]
   },
   "devDependencies": {
+    "@craco/craco": "^6.2.0",
+    "@loadable/babel-plugin": "^5.13.2",
+    "@loadable/webpack-plugin": "^5.15.1",
     "null-loader": "^4.0.1",
     "webpack-node-externals": "^3.0.0"
   }

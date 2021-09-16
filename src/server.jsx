@@ -1,9 +1,10 @@
 import express from 'express';
-import ReactDOMServer from 'react-dom/server';
+import { renderToString } from 'react-dom/server';
 import App from './App';
 import path from 'path';
 import fs from "fs";
 import React from 'react';
+import { ChunkExtractor } from '@loadable/server';
 
 const loadIndexHtml = async () => {
     const indexHtmlPath = path.resolve('./build/index.html');
@@ -45,11 +46,22 @@ const startSsrServer = ([indexHtml]) => {
     const server = express();
     server.use(serve('./build'));
     server.get('*', (req, res) => {
-        const renderedApp = ReactDOMServer.renderToString(<App />);
+        const statsFile = path.resolve('./build/loadable-stats.json');
+        const extractor = new ChunkExtractor({ statsFile });
+        const jsx = extractor.collectChunks(<App />);
+
+        const renderedApp = renderToString(jsx);
+
+        const scriptTags = extractor.getScriptTags();
+        const linkTags = extractor.getLinkTags();
+        const styleTags = extractor.getStyleTags();
 
         const document = indexHtml
             .replace('<div id="root"></div>', `<div id="root">${renderedApp}</div>`)
-            .replace('%REACT_APP_IS_SSR_MODE%', `${!process.env.NO_SSR}`);
+            .replace('%REACT_APP_IS_SSR_MODE%', `${!process.env.NO_SSR}`)
+            .replace('%REACT_APP_LINK_TAGS%', `<!-- linkTags --> ${linkTags} <!-- linkTags end -->`)
+            .replace('%REACT_APP_STYLE_TAGS%', `<!-- styleTags --> ${styleTags} <!-- styleTags end -->`)
+            .replace('%REACT_APP_SCRIPT_TAGS%', `<!-- scriptTags --> ${scriptTags} <!-- scriptTags end -->`);
         res.send(document);
     });
     
